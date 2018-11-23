@@ -6,16 +6,21 @@ class ReportCommand extends commando.Command {
     }
 
     async run(message, args) {
-        if (!message.guild.member(message.mentions.first)) {
+        if (!message.mentions.members.first()) {
             message.channel.send("User not found.\nUsage: !report <@mention> <reason>");
             return;
         }
-        let reason = args.join(" ").slice(22);
         message.delete().catch(O_o => {});
         if (message.member.hasPermission("MANAGE_MESSAGES")) {
-            message.reply(reason + ", " + message.mentions.first);
+            let channel = message.guild.channels.find("name", "reports");
+            if (!channel) {
+                message.reply("Channel 'reports' not found.");
+                return;
+            }
+            channel.send(args);
+            message.reply("Report successful.")
             return;
-        } else if(message.guild.member(message.mentions.first).hasPermission("MANAGE_MESSAGES")) {
+        } else if(message.mentions.members.first().hasPermission("MANAGE_MESSAGES")) {
             message.channel.send("That person can't be reported!");
             return;
         }
