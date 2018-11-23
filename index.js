@@ -1,6 +1,6 @@
 const commando = require("discord.js-commando");
 const bot = new commando.Client();
-const TOKEN = "NTEzMDYxMTU0NjM4MDA0MjYz.DtCp-Q.XFgMzuIVd6lTDf5_dx1Zi9Gy0Lg";
+const TOKEN = "<censored>";
 
 bot.registry.registerGroup("simple", "Simple");
 bot.registry.registerGroup("music", "Music");
