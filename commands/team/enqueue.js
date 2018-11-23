@@ -7,6 +7,8 @@ class EnqueueCommand extends commando.Command {
     }
 
     async run(message, args) {
+        if (!servers[message.guild.id]) servers[message.guild.id] = {game_queue: [], music_queue: []};
+        var queue = servers[message.guild.id].game_queue;
         for (let i = 0; i < queue.length; i++) {
             if (queue[i] == message.author) {
                 message.reply("You are already in queue. If you want to leave => !dequeue")

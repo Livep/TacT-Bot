@@ -1,6 +1,7 @@
 const commando = require("discord.js-commando");
+const configFile = require("./config.json");
+const config = configFile.default;
 const bot = new commando.Client();
-const TOKEN = "<censored>";
 
 bot.registry.registerGroup("simple", "Simple");
 bot.registry.registerGroup("music", "Music");
@@ -47,12 +48,27 @@ function memberLeft(member) {
 
 }
 
-function startStreaming(oldMember, newMember) {
-    if (!newMember.roles.find("name", "Team") || !newMember.roles.find("name", "Team-Leader")) return;
-    if (!oldMember.presence.game.streaming && newMember.presence.game.streaming) {
-        const channel = member.guild.channels.find("name", "news");
-        if (!channel) return;
-        channel.send(`${newMember.user} is now Live! Watch the stream at: ${newMember.presence.game.url}`);
+function activityChanged(oldMember, newMember) {
+    if (newMember.presence.game) {
+        //if (!newMember.roles.find("name", "Team") || !newMember.roles.find("name", "Team-Leader")) return;
+        if (!oldMember.presence.game && newMember.presence.game.streaming) {
+            const channel = member.guild.channels.find("name", "news");
+            if (channel) channel.send(`${newMember.user} is now Live! Watch the stream at: ${newMember.presence.game.url}`);
+        }
+        if (newMember.presence.game.name == "Rainbow Six Siege" || newMember.presence.game.name == 'Tom Clancy\'s Rainbow Six Siege') {
+            if(!oldMember.presence.game) {
+                let channel = newMember.guild.channels.find("name", "team-besprechung");
+                if (!channel || newMember.presence.status.offline) return;
+                channel.send(`${newMember.user} spielt Tom Clancy's Rainbow Six Siege`);
+            }
+            if (newMember.presence.game.details == "im MENÜ" || newMember.presence.game.details == "in MENU") {
+                if (!servers[newMember.guild.id]) servers[newMember.guild.id] = {game_queue: [], music_queue: []};
+                if (!servers[newMember.guild.id].game_queue.indexOf(newMember.user)+1) servers[newMember.guild.id].game_queue.push(newMember.user);
+            } else {
+                if (!servers[newMember.guild.id]) servers[newMember.guild.id] = {game_queue: [], music_queue: []};
+                if (servers[newMember.guild.id].game_queue.indexOf(newMember.user)+1) servers[newMember.guild.id].game_queue.splice(servers[newMember.guild.id].game_queue.indexOf(newMember.user), 1);
+            }
+        }
     }
 }
 
@@ -60,5 +76,5 @@ bot.on("message", messageEvent);
 bot.on("ready", startup);
 bot.on("guildMemberAdd", memberJoin);
 bot.on("guildMemberRemove", memberLeft);
-bot.on("presenceUpdate", startStreaming);
-bot.login(TOKEN);
+bot.on("presenceUpdate", activityChanged);
+bot.login(config.token);
