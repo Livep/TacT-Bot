@@ -12,7 +12,7 @@ class ReportCommand extends commando.Command {
         }
         message.delete().catch(O_o => {});
         if (message.member.hasPermission("MANAGE_MESSAGES")) {
-            let channel = message.guild.channels.find("name", "reports");
+            let channel = message.guild.channels.find(c => c.name === "reports");
             if (!channel) {
                 message.reply("Channel 'reports' not found.");
                 return;

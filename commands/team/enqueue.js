@@ -10,7 +10,7 @@ class EnqueueCommand extends commando.Command {
         if (!servers[message.guild.id]) servers[message.guild.id] = {game_queue: [], music_queue: []};
         var queue = servers[message.guild.id].game_queue;
         for (let i = 0; i < queue.length; i++) {
-            if (queue[i] == message.author) {
+            if (queue[i] === message.author) {
                 message.reply("You are already in queue. If you want to leave => !dequeue")
                 message.delete(300);
                 return;
@@ -18,7 +18,7 @@ class EnqueueCommand extends commando.Command {
         }
         queue.push(message.author);
         message.reply(" has been added to the queue. (" + queue.length + "/5)");
-        if (queue.length == 5) {
+        if (queue.length === 5) {
             message.channel.send("Your team is ready to go! Members: " + queue[0] + ", " +  queue[1] + ", " + queue[2] + ", " + queue[3] + ", " + queue[4]);
             queue = []
         }

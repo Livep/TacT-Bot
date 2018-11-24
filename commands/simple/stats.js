@@ -13,14 +13,14 @@ class StatsCommand extends commando.Command {
         let uname = ""
         let pform  = "uplay"
         var stats;
-        if (parameters[0] == "") {
+        if (parameters[0] === "") {
             message.reply("No user specified! => !info <name> [platform{uplay(default), xone, ps4}]")
             message.delete(300);
             return;
         } else if (parameters.length >= 1) {
             uname = parameters[0];
-            if (parameters.length == 2) {
-                if (parameters[1] == "xone" || parameters[1] == "uplay" || parameters[1] == "ps4") {
+            if (parameters.length === 2) {
+                if (parameters[1] === "xone" || parameters[1] === "uplay" || parameters[1] === "ps4") {
                     pform = parameters[1];
                 } else {
                     message.reply("Invalid platform! => uplay, xone or ps4")
