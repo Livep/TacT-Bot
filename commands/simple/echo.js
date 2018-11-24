@@ -6,7 +6,7 @@ class EchoCommand extends commando.Command {
     }
 
     async run(message, args) {
-        message.channel.send(message.content);
+        message.channel.send(args);
         message.delete(300);
         console.log(message.content);
     }

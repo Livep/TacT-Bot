@@ -5,7 +5,7 @@ const r6 = new rainbowSixApi();
 
 class StatsCommand extends commando.Command {
     constructor(client) {
-        super(client, {name:"stats", group:"simple", memberName:"stats", description:"Shows the R6stats result for specific user"})
+        super(client, {name:"stats", group:"simple", memberName:"stats", description:"Shows the R6stats result for specific user", examples:["!stats <R6name> [platform(uplay, xone, ps4)]"]})
     }
 
     async run(message, args) {
@@ -35,17 +35,17 @@ class StatsCommand extends commando.Command {
                         .setColor(0xA926B1)
                         .setAuthor("TransacT-eSports Stats")
                         .setTitle(stats["username"])
-                        .setDescription("Overall stats:")
+                        .setDescription("Ranked stats:")
                         .addField("Level", stats["stats"]["progression"]["level"], true)
-                        .addField("Playtime", (stats["stats"]["casual"]["playtime"] + stats["stats"]["ranked"]["playtime"])/360, true)
-                        .addField("Kill/Death", (stats["stats"]["casual"]["kd"] + stats["stats"]["ranked"]["kd"])/2, true)
-                        .addField("Kills", (stats["stats"]["casual"]["kills"] + stats["stats"]["ranked"]["kills"]), true)
-                        .addField("Deaths", (stats["stats"]["casual"]["deaths"] + stats["stats"]["ranked"]["deaths"]), true)
+                        .addField("Playtime", stats["stats"]["ranked"]["playtime"]/3600, true)
+                        .addField("Kill/Death", stats["stats"]["ranked"]["kd"], true)
+                        .addField("Kills", (stats["stats"]["ranked"]["kills"]), true)
+                        .addField("Deaths", (stats["stats"]["ranked"]["deaths"]), true)
                         .addField("Headshots", stats["stats"]["overall"]["headshots"], true)
                         .addField("Assists", stats["stats"]["overall"]["assists"], true)
-                        .addField("Win/Lose", (stats["stats"]["casual"]["wlr"] + stats["stats"]["ranked"]["wlr"])/2, true)
-                        .addField("Wins", (stats["stats"]["casual"]["wins"] + stats["stats"]["ranked"]["wins"]), true)
-                        .addField("Losses", (stats["stats"]["casual"]["losses"] + stats["stats"]["ranked"]["losses"]), true)
+                        .addField("Win/Lose", stats["stats"]["ranked"]["wlr"], true)
+                        .addField("Wins", (stats["stats"]["ranked"]["wins"]), true)
+                        .addField("Losses", (stats["stats"]["ranked"]["losses"]), true)
                     message.channel.send(info);
                 })
                 .catch(error => {

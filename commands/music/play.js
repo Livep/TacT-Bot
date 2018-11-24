@@ -2,7 +2,7 @@ const commando = require("discord.js-commando");
 const ytdl = require("ytdl-core");
 
 function quit(server) {
-    if (!servers[message.guild.id]) servers[message.guild.id] = {game_queue: [], music_queue: []};
+    if (!servers[message.guild.id]) servers[message.guild.id] = {game_queue: [], music_queue: [], hidden:true};
     var server = servers[message.guild.id];
     if(server.music_queue[0]) play(connection, message);
     else connection.disconnect();

@@ -35,14 +35,14 @@ function startup() {
 }
 
 function memberJoin(member) {
-    const channel = member.guild.channels.find(c => c.name === "welcome");
+    const channel = member.guild.channels.find(c => c.name === "joiningmembers");
     if (!channel) return;
     channel.send(`Willkommen, ${member.user} auf dem offiziellen TransacT-eSports Discord.`)
-    member.addRole(member.guild.roles.find(r => r.name === "Spieler"));
+    member.addRole(member.guild.roles.find(r => r.name === "Gamer"));
 }
 
 function memberLeft(member) {
-    const channel = member.guild.channels.find(c => c.name === "welcome");
+    const channel = member.guild.channels.find(c => c.name === "joiningmembers");
     if (!channel) return;
     channel.send(`Aufwiedersehen, ${member.displayName}.`);
 
@@ -52,12 +52,12 @@ function activityChanged(oldMember, newMember) {
     if (newMember.presence.game) {
         if (!newMember.roles.find(r => r.name === "Team") || !newMember.roles.find(r => r.name === "Team-Leader")) return;
         if (!oldMember.presence.game && newMember.presence.game.streaming) {
-            const channel = member.guild.channels.find(c => c.name === "news");
-            if (channel) channel.send(`${newMember.user} is now Live! Watch the stream at: ${newMember.presence.game.url}`);
+            const channel = member.guild.channels.find(c => c.name === "announcements");
+            if (channel) channel.send(`@everyone ${newMember.user} is now Live! Watch the stream at: ${newMember.presence.game.url}`);
         }
         if (newMember.presence.game.name === "Rainbow Six Siege" || newMember.presence.game.name === 'Tom Clancy\'s Rainbow Six Siege') {
             if(!oldMember.presence.game) {
-                let channel = newMember.guild.channels.find(c => c.name === "team-besprechung");
+                let channel = newMember.guild.channels.find(c => c.name === "online");
                 if (!channel || newMember.presence.status.offline) return;
                 channel.send(`${newMember.user} spielt Tom Clancy's Rainbow Six Siege`);
             }
@@ -82,6 +82,7 @@ function privateChannel(oldMember, newMember) {
                     newChannel.setParent(newMember.voiceChannel.parent);
                     newChannel.overwritePermissions(newMember, {CREATE_INSTANT_INVITE: true, CONNECT: true, MOVE_MEMBERS: true});
                     newChannel.overwritePermissions(newChannel.guild.roles.find(r => r.name = "@everyone"), {CREATE_INSTANT_INVITE: false, CONNECT: false, MOVE_MEMBERS: false});
+                    newChannel.overwritePermissions(newChannel.guild.roles.find(r => r.name = "Bot"), {CREATE_INSTANT_INVITE: true, MOVE_MEMBERS: true, MANAGE_CHANNELS: true});
                     newChannel.setUserLimit(5)
                     .then(newChannel => {
                         newMember.setVoiceChannel(newChannel)
@@ -114,7 +115,7 @@ bot.login(config.token);
 //permissions: 489909329
 /*var PERMISSIONS = {
 MANAGE_ROLES: true,
-MANAGE_CHANNELS: true, MISSING
+MANAGE_CHANNELS: true,
 CREATE_INSTANT_INVITE: true,
 CHANGE_NICKNAME: true,
 MANAGE_NICKNAMES: true,
